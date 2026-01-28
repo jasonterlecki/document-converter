@@ -44,6 +44,6 @@ describe('serializeIRToMarkdown', () => {
     expect(markdown).toContain('# Serialize Test');
     expect(markdown).toContain('**world**');
     expect(markdown).toContain('*friends*');
-    expect(markdown).toContain('- Item');
+    expect(markdown).toContain('* Item');
   });
 });

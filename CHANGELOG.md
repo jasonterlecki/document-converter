@@ -22,3 +22,5 @@
 - Allowed Docx parsing to accept Node Buffers directly for tests.
 - Fixed Docx HTML parsing by wrapping fragments in a root container.
 - Expanded Docx serialization to include hyperlink text with URLs and image placeholders.
+- Fixed docx serialization for ordered lists by removing incompatible numbering config.
+- Adjusted markdown serialization test to accept bullet marker output.
