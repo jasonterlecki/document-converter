@@ -9,3 +9,4 @@
 - Added IR normalization tests.
 - Updated pnpm packageManager version to 10.28.2.
 - Added Markdown parser/serializer with fixtures and unit tests in core.
+- Added LaTeX parser/serializer subset with fixtures and unit tests in core.
