@@ -53,6 +53,18 @@ header p {
   font-size: 0.95rem;
 }
 
+.sample-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.sample-row button {
+  background: #3b6d5c;
+  color: #fff;
+  border: none;
+}
+
 .controls button {
   background: #1f2328;
   color: #fff;
@@ -114,4 +126,13 @@ textarea {
   border-radius: 12px;
   background: #fbe5e5;
   color: #7a1f1f;
+}
+
+.error h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.error p {
+  margin: 0 0 4px;
 }

@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ConversionWorkerClient } from '../adapters/conversionWorker';
 import type { Format } from '../workers/conversionWorker';
+import { samples } from './samples';
 
 const formatOptions: Format[] = ['markdown', 'latex', 'docx'];
 
@@ -10,10 +11,14 @@ export function App() {
   const [toFormat, setToFormat] = useState<Format>('latex');
   const [inputText, setInputText] = useState('');
   const [inputFile, setInputFile] = useState<File | null>(null);
+  const [inputBuffer, setInputBuffer] = useState<ArrayBuffer | null>(null);
   const [outputText, setOutputText] = useState('');
   const [outputBuffer, setOutputBuffer] = useState<ArrayBuffer | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isConverting, setIsConverting] = useState(false);
+  const [selectedSample, setSelectedSample] = useState('');
+
+  useEffect(() => () => worker.dispose(), [worker]);
 
   const handleConvert = async () => {
     setError(null);
@@ -24,10 +29,10 @@ export function App() {
     try {
       let content: string | ArrayBuffer;
       if (fromFormat === 'docx') {
-        if (!inputFile) {
+        if (!inputFile && !inputBuffer) {
           throw new Error('Select a .docx file to convert.');
         }
-        content = await inputFile.arrayBuffer();
+        content = inputFile ? await inputFile.arrayBuffer() : (inputBuffer as ArrayBuffer);
       } else {
         content = inputText;
       }
@@ -60,6 +65,28 @@ export function App() {
     URL.revokeObjectURL(url);
   };
 
+  const handleSampleLoad = () => {
+    const sample = samples.find((item) => item.id === selectedSample);
+    if (!sample) {
+      return;
+    }
+    setFromFormat(sample.from);
+    setToFormat(sample.to);
+    setOutputText('');
+    setOutputBuffer(null);
+    setError(null);
+
+    if (sample.contentType === 'docx') {
+      setInputFile(null);
+      setInputText('');
+      setInputBuffer(base64ToArrayBuffer(sample.content));
+    } else {
+      setInputBuffer(null);
+      setInputFile(null);
+      setInputText(sample.content);
+    }
+  };
+
   return (
     <main className="app">
       <header>
@@ -67,6 +94,22 @@ export function App() {
         <p>Convert Markdown, LaTeX, and Word documents in the browser.</p>
       </header>
       <section className="controls">
+        <label>
+          Sample
+          <div className="sample-row">
+            <select value={selectedSample} onChange={(event) => setSelectedSample(event.target.value)}>
+              <option value="">Select a sample</option>
+              {samples.map((sample) => (
+                <option key={sample.id} value={sample.id}>
+                  {sample.label}
+                </option>
+              ))}
+            </select>
+            <button type="button" onClick={handleSampleLoad} disabled={!selectedSample}>
+              Load
+            </button>
+          </div>
+        </label>
         <label>
           From
           <select value={fromFormat} onChange={(event) => setFromFormat(event.target.value as Format)}>
@@ -98,7 +141,10 @@ export function App() {
             <input
               type="file"
               accept=".docx"
-              onChange={(event) => setInputFile(event.target.files?.[0] ?? null)}
+              onChange={(event) => {
+                setInputFile(event.target.files?.[0] ?? null);
+                setInputBuffer(null);
+              }}
             />
           ) : (
             <textarea
@@ -122,7 +168,22 @@ export function App() {
           )}
         </div>
       </section>
-      {error ? <section className="error">{error}</section> : null}
+      {error ? (
+        <section className="error">
+          <h3>Conversion error</h3>
+          <p>{error}</p>
+          <p>Check that the input and format selection match the content.</p>
+        </section>
+      ) : null}
     </main>
   );
 }
+
+const base64ToArrayBuffer = (base64: string) => {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i += 1) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes.buffer;
+};
