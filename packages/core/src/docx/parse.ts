@@ -11,8 +11,21 @@ import type {
 import { normalizeDocument } from '../ir';
 
 export const parseDocxToIR = async (arrayBuffer: ArrayBuffer): Promise<IRDocument> => {
-  const result = await mammoth.convertToHtml(resolveMammothInput(arrayBuffer));
-  const { document } = parseHTML(result.value);
+  const input = resolveMammothInput(arrayBuffer);
+  const result = await mammoth.convertToHtml(input);
+  const html = result.value ?? '';
+
+  if (html.trim().length === 0) {
+    const raw = await mammoth.extractRawText(input);
+    const blocks = raw.value
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0)
+      .map((line) => ({ type: 'Paragraph', inlines: [{ type: 'Text', text: line }] } as Block));
+    return normalizeDocument({ type: 'Document', blocks });
+  }
+
+  const { document } = parseHTML(`<body>${html}</body>`);
   const body = document.body;
   const blocks = body ? mapBlockChildren(body) : [];
   return normalizeDocument({ type: 'Document', blocks });
