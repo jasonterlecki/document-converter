@@ -207,10 +207,17 @@ const serializeInline = (inline: Inline): TextRun[] => {
       return [new TextRun({ text: inline.text, font: 'Courier New' })];
     case 'LineBreak':
       return [new TextRun({ text: '\n' })];
-    case 'Link':
-      return [new TextRun({ text: inline.inlines.map(inlineToText).join(''), style: 'Hyperlink' })];
-    case 'Image':
-      return [new TextRun(`[image: ${inline.alt ?? inline.src}]`)];
+    case 'Link': {
+      const label = inline.inlines.map(inlineToText).join('');
+      const href = inline.href;
+      const text = href ? `${label} (${href})` : label;
+      return [new TextRun({ text, underline: {}, color: '1155cc' })];
+    }
+    case 'Image': {
+      const label = inline.alt ?? 'image';
+      const src = inline.src ? ` ${inline.src}` : '';
+      return [new TextRun(`[${label}${src}]`)];
+    }
     default:
       return [];
   }

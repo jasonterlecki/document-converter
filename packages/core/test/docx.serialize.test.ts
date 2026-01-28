@@ -15,6 +15,14 @@ const sampleDoc: IRDocument = {
       inlines: [
         { type: 'Text', text: 'Hello ' },
         { type: 'Strong', inlines: [{ type: 'Text', text: 'world' }] },
+        { type: 'Text', text: ' and ' },
+        {
+          type: 'Link',
+          href: 'https://example.com',
+          inlines: [{ type: 'Text', text: 'link' }],
+        },
+        { type: 'Text', text: ' plus ' },
+        { type: 'Image', src: 'https://example.com/image.png', alt: 'image' },
       ],
     },
   ],
@@ -28,6 +36,9 @@ describe('serializeIRToDocx', () => {
     expect(text).toContain('Docx Serialize Test');
     expect(text).toContain('Hello');
     expect(text).toContain('world');
+    expect(text).toContain('link');
+    expect(text).toContain('https://example.com');
+    expect(text).toContain('image');
   });
 });
 
