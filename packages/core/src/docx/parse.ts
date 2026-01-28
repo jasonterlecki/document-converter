@@ -11,11 +11,19 @@ import type {
 import { normalizeDocument } from '../ir';
 
 export const parseDocxToIR = async (arrayBuffer: ArrayBuffer): Promise<IRDocument> => {
-  const result = await mammoth.convertToHtml({ arrayBuffer });
+  const result = await mammoth.convertToHtml(resolveMammothInput(arrayBuffer));
   const { document } = parseHTML(result.value);
   const body = document.body;
   const blocks = body ? mapBlockChildren(body) : [];
   return normalizeDocument({ type: 'Document', blocks });
+};
+
+const resolveMammothInput = (arrayBuffer: ArrayBuffer): { arrayBuffer?: ArrayBuffer; buffer?: Buffer } => {
+  const NodeBuffer = (globalThis as unknown as { Buffer?: typeof Buffer }).Buffer;
+  if (NodeBuffer) {
+    return { buffer: NodeBuffer.from(arrayBuffer) };
+  }
+  return { arrayBuffer };
 };
 
 const mapBlockChildren = (parent: Element): Block[] => {

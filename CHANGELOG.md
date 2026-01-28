@@ -17,3 +17,4 @@
 - Added web smoke tests for Markdown→LaTeX and Docx→Markdown conversions.
 - Switched web samples to load from core fixtures for a shared source of truth.
 - Fixed web test resolution by aliasing @docmorph/core to core source in Vite config.
+- Fixed Docx parsing in Node tests by using Buffer when available.
