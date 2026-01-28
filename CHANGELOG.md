@@ -14,3 +14,4 @@
 - Added round-trip shape tests for Markdown, LaTeX, and Docx.
 - Added a web conversion worker pipeline with basic UI wiring.
 - Added sample document loader in the web UI and improved error panel messaging.
+- Added web smoke tests for Markdown→LaTeX and Docx→Markdown conversions.

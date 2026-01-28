@@ -37,6 +37,7 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 
 ## Tests
 - Round-trip “shape” tests live in `packages/core/test/roundtrip.*.test.ts`.
+- Web smoke tests live in `packages/web/test/smoke.test.ts`.
 
 ## Workflows and conventions
 - Use pnpm workspaces (see root packageManager version).
