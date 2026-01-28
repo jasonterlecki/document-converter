@@ -12,3 +12,4 @@
 - Added LaTeX parser/serializer subset with fixtures and unit tests in core.
 - Added Docx parse/serialize scaffolding with fixtures and unit tests in core.
 - Added round-trip shape tests for Markdown, LaTeX, and Docx.
+- Added a web conversion worker pipeline with basic UI wiring.

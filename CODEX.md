@@ -17,6 +17,8 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 - `packages/core/src/docx/index.ts`: Docx parse/serialize entry.
 - `packages/web/src/main.tsx`: web app entry.
 - `packages/web/src/app/App.tsx`: initial UI shell.
+- `packages/web/src/workers/conversionWorker.ts`: conversion worker handling format pairs.
+- `packages/web/src/adapters/conversionWorker.ts`: worker client adapter for UI use.
 
 ## Data model
 - IR models documents as blocks and inlines in `packages/core/src/ir/types.ts`.
