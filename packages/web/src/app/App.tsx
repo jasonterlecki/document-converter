@@ -17,6 +17,7 @@ export function App() {
   const [error, setError] = useState<string | null>(null);
   const [isConverting, setIsConverting] = useState(false);
   const [selectedSample, setSelectedSample] = useState('');
+  const [isLoadingSample, setIsLoadingSample] = useState(false);
 
   useEffect(() => () => worker.dispose(), [worker]);
 
@@ -65,11 +66,12 @@ export function App() {
     URL.revokeObjectURL(url);
   };
 
-  const handleSampleLoad = () => {
+  const handleSampleLoad = async () => {
     const sample = samples.find((item) => item.id === selectedSample);
     if (!sample) {
       return;
     }
+    setIsLoadingSample(true);
     setFromFormat(sample.from);
     setToFormat(sample.to);
     setOutputText('');
@@ -79,11 +81,24 @@ export function App() {
     if (sample.contentType === 'docx') {
       setInputFile(null);
       setInputText('');
-      setInputBuffer(base64ToArrayBuffer(sample.content));
+      try {
+        const url = (sample.content as { url: string }).url;
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Failed to load docx fixture.');
+        }
+        const buffer = await response.arrayBuffer();
+        setInputBuffer(buffer);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : String(err));
+      } finally {
+        setIsLoadingSample(false);
+      }
     } else {
       setInputBuffer(null);
       setInputFile(null);
-      setInputText(sample.content);
+      setInputText(sample.content as string);
+      setIsLoadingSample(false);
     }
   };
 
@@ -105,8 +120,8 @@ export function App() {
                 </option>
               ))}
             </select>
-            <button type="button" onClick={handleSampleLoad} disabled={!selectedSample}>
-              Load
+            <button type="button" onClick={handleSampleLoad} disabled={!selectedSample || isLoadingSample}>
+              {isLoadingSample ? 'Loading…' : 'Load'}
             </button>
           </div>
         </label>
@@ -178,12 +193,3 @@ export function App() {
     </main>
   );
 }
-
-const base64ToArrayBuffer = (base64: string) => {
-  const binary = atob(base64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i += 1) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-  return bytes.buffer;
-};

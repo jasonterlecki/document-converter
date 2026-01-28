@@ -1,30 +1,33 @@
 import { describe, expect, it } from 'vitest';
-import { parseMarkdownToIR, parseDocxToIR, serializeIRToLatex, serializeIRToMarkdown } from '@docmorph/core';
-import { samples } from '../src/app/samples';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import {
+  parseMarkdownToIR,
+  parseDocxToIR,
+  serializeIRToLatex,
+  serializeIRToMarkdown,
+} from '@docmorph/core';
 
-const base64ToArrayBuffer = (base64: string) => {
-  const buffer = Buffer.from(base64, 'base64');
+const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '../../..');
+const fixturePath = (...segments: string[]) => resolve(repoRoot, 'packages', 'core', 'test', 'fixtures', ...segments);
+
+const readBuffer = (path: string) => {
+  const buffer = readFileSync(path);
   return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
 };
 
 describe('web smoke tests', () => {
   it('converts markdown to latex with expected markers', () => {
-    const markdownSample = samples.find((sample) => sample.id === 'markdown-basic');
-    if (!markdownSample || markdownSample.contentType !== 'text') {
-      throw new Error('Missing markdown sample');
-    }
-    const ir = parseMarkdownToIR(markdownSample.content);
+    const markdown = readFileSync(fixturePath('markdown', 'basic.md'), 'utf8');
+    const ir = parseMarkdownToIR(markdown);
     const latex = serializeIRToLatex(ir);
     expect(latex).toContain('\\section');
     expect(latex).toContain('\\textbf');
   });
 
   it('converts docx to markdown with headings and lists', async () => {
-    const docxSample = samples.find((sample) => sample.id === 'docx-basic');
-    if (!docxSample || docxSample.contentType !== 'docx') {
-      throw new Error('Missing docx sample');
-    }
-    const buffer = base64ToArrayBuffer(docxSample.content);
+    const buffer = readBuffer(fixturePath('docx', 'basic.docx'));
     const ir = await parseDocxToIR(buffer);
     const markdown = serializeIRToMarkdown(ir);
     expect(markdown).toContain('#');
