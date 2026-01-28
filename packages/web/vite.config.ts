@@ -4,6 +4,11 @@ import { resolve } from 'node:path';
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@docmorph/core': resolve(__dirname, '../core/src/index.ts'),
+    },
+  },
   build: {
     target: 'es2022'
   },
