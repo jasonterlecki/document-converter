@@ -37,6 +37,7 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 - Docx parsing uses Buffer when running in Node tests.
 - Docx parsing falls back to raw text extraction if HTML conversion is empty.
 - Docx parsing accepts Node Buffers directly for test fixtures.
+- Docx HTML parsing wraps fragments in a root container before mapping blocks.
 
 ## Tests
 - Round-trip “shape” tests live in `packages/core/test/roundtrip.*.test.ts`.

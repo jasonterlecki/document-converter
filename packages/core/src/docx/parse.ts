@@ -25,9 +25,9 @@ export const parseDocxToIR = async (inputData: ArrayBuffer | Buffer): Promise<IR
     return normalizeDocument({ type: 'Document', blocks });
   }
 
-  const { document } = parseHTML(`<body>${html}</body>`);
-  const body = document.body;
-  const blocks = body ? mapBlockChildren(body) : [];
+  const { document } = parseHTML(`<div id="docmorph-root">${html}</div>`);
+  const root = document.querySelector('#docmorph-root');
+  const blocks = root ? mapBlockChildren(root) : [];
   return normalizeDocument({ type: 'Document', blocks });
 };
 
