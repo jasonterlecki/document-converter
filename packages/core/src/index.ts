@@ -1,6 +1,2 @@
-export type IRDocument = {
-  type: 'Document';
-  blocks: Array<unknown>;
-};
-
-export const IR_VERSION = '0.1.0';
+export * from './ir';
+export { IR_VERSION } from './ir/version';

@@ -11,12 +11,15 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 
 ## Key entry points
 - `packages/core/src/index.ts`: public exports for the core library.
+- `packages/core/src/ir/index.ts`: IR types, validators, and normalization.
 - `packages/web/src/main.tsx`: web app entry.
 - `packages/web/src/app/App.tsx`: initial UI shell.
 
 ## Data model
-- IR (in progress) will model documents as blocks and inlines.
-- IR versioning is tracked via `IR_VERSION` in `packages/core/src/index.ts`.
+- IR models documents as blocks and inlines in `packages/core/src/ir/types.ts`.
+- Validation helpers live in `packages/core/src/ir/validators.ts`.
+- Normalization (merge adjacent text nodes) lives in `packages/core/src/ir/normalize.ts`.
+- IR versioning is tracked via `IR_VERSION` in `packages/core/src/ir/version.ts`.
 
 ## Workflows and conventions
 - Use pnpm workspaces.

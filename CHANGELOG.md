@@ -5,3 +5,5 @@
 - Added base TypeScript, ESLint, and Prettier configuration.
 - Added placeholder React app entry for the web package.
 - Added initial README and CODEX documentation.
+- Implemented IR type model, validators, and normalization pass in core.
+- Added IR normalization tests.
