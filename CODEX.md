@@ -22,7 +22,7 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 - IR versioning is tracked via `IR_VERSION` in `packages/core/src/ir/version.ts`.
 
 ## Workflows and conventions
-- Use pnpm workspaces.
+- Use pnpm workspaces (see root packageManager version).
 - Keep conversions browser-compatible; no server dependencies.
 - Update `CHANGELOG.md` and `CODEX.md` on every change.
 - Commit after each change; do not push.

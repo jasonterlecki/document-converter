@@ -7,3 +7,4 @@
 - Added initial README and CODEX documentation.
 - Implemented IR type model, validators, and normalization pass in core.
 - Added IR normalization tests.
+- Updated pnpm packageManager version to 10.28.2.

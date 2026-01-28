@@ -12,11 +12,20 @@
     "format": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\""
   },
   "devDependencies": {
+    "@types/mdast": "^4.0.4",
+    "@types/unist": "^3.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "eslint": "^9.39.2",
+    "prettier": "^3.2.5",
     "typescript": "^5.4.0",
-    "vitest": "^1.6.0",
-    "eslint": "^8.57.0",
-    "@typescript-eslint/eslint-plugin": "^7.3.0",
-    "@typescript-eslint/parser": "^7.3.0",
-    "prettier": "^3.2.5"
+    "vitest": "^1.6.0"
+  },
+  "dependencies": {
+    "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.1.0"
   }
 }
