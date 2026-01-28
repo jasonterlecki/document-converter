@@ -22,6 +22,9 @@
     "vitest": "^1.6.0"
   },
   "dependencies": {
+    "docx": "^9.5.1",
+    "linkedom": "^0.18.12",
+    "mammoth": "^1.11.0",
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
