@@ -8,12 +8,28 @@ import {
   TableRow,
   TableCell,
   WidthType,
+  AlignmentType,
+  LevelFormat,
 } from 'docx';
 import type { Block, Inline, IRDocument, TableAlignment } from '../ir';
 
 export const serializeIRToDocx = async (doc: IRDocument): Promise<ArrayBuffer> => {
   const paragraphs = doc.blocks.flatMap((block) => serializeBlock(block, 0));
+  const numbering = {
+    config: [
+      {
+        reference: 'docmorph-numbering',
+        levels: [0, 1, 2, 3, 4, 5].map((level) => ({
+          level,
+          format: LevelFormat.DECIMAL,
+          text: `%${level + 1}.`,
+          alignment: AlignmentType.START,
+        })),
+      },
+    ],
+  };
   const document = new Document({
+    numbering,
     sections: [
       {
         properties: {},
@@ -79,6 +95,7 @@ const serializeListItem = (
       new Paragraph({
         children,
         bullet: ordered ? undefined : { level },
+        numbering: ordered ? { reference: 'docmorph-numbering', level } : undefined,
       }),
     );
     if (isFirst) {
@@ -90,6 +107,7 @@ const serializeListItem = (
       new Paragraph({
         children: [new TextRun('')],
         bullet: ordered ? undefined : { level },
+        numbering: ordered ? { reference: 'docmorph-numbering', level } : undefined,
       }),
     );
   }
