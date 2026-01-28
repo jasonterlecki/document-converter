@@ -10,8 +10,8 @@ import type {
 } from '../ir';
 import { normalizeDocument } from '../ir';
 
-export const parseDocxToIR = async (arrayBuffer: ArrayBuffer): Promise<IRDocument> => {
-  const input = resolveMammothInput(arrayBuffer);
+export const parseDocxToIR = async (inputData: ArrayBuffer | Buffer): Promise<IRDocument> => {
+  const input = resolveMammothInput(inputData);
   const result = await mammoth.convertToHtml(input);
   const html = result.value ?? '';
 
@@ -31,12 +31,17 @@ export const parseDocxToIR = async (arrayBuffer: ArrayBuffer): Promise<IRDocumen
   return normalizeDocument({ type: 'Document', blocks });
 };
 
-const resolveMammothInput = (arrayBuffer: ArrayBuffer): { arrayBuffer?: ArrayBuffer; buffer?: Buffer } => {
+const resolveMammothInput = (
+  inputData: ArrayBuffer | Buffer,
+): { arrayBuffer?: ArrayBuffer; buffer?: Buffer } => {
   const NodeBuffer = (globalThis as unknown as { Buffer?: typeof Buffer }).Buffer;
   if (NodeBuffer) {
-    return { buffer: NodeBuffer.from(arrayBuffer) };
+    if (NodeBuffer.isBuffer(inputData)) {
+      return { buffer: inputData };
+    }
+    return { buffer: NodeBuffer.from(inputData) };
   }
-  return { arrayBuffer };
+  return { arrayBuffer: inputData as ArrayBuffer };
 };
 
 const mapBlockChildren = (parent: Element): Block[] => {

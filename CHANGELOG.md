@@ -19,3 +19,4 @@
 - Fixed web test resolution by aliasing @docmorph/core to core source in Vite config.
 - Fixed Docx parsing in Node tests by using Buffer when available.
 - Added raw-text fallback for Docx parsing when HTML output is empty.
+- Allowed Docx parsing to accept Node Buffers directly for tests.

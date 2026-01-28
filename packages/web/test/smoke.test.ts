@@ -12,10 +12,7 @@ import {
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '../../..');
 const fixturePath = (...segments: string[]) => resolve(repoRoot, 'packages', 'core', 'test', 'fixtures', ...segments);
 
-const readBuffer = (path: string) => {
-  const buffer = readFileSync(path);
-  return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
-};
+const readBuffer = (path: string) => readFileSync(path);
 
 describe('web smoke tests', () => {
   it('converts markdown to latex with expected markers', () => {
