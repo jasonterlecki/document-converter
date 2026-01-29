@@ -1,12 +1,3 @@
-import {
-  parseMarkdownToIR,
-  parseLatexToIR,
-  parseDocxToIR,
-  serializeIRToMarkdown,
-  serializeIRToLatex,
-  serializeIRToDocx,
-} from '@docmorph/core';
-
 export type Format = 'markdown' | 'latex' | 'docx';
 
 export type ConversionRequest = {
@@ -23,14 +14,18 @@ export type ConversionResponse = {
   error?: string;
 };
 
+const loadMarkdown = async () => import('@docmorph/core/markdown');
+const loadLatex = async () => import('@docmorph/core/latex');
+const loadDocx = async () => import('@docmorph/core/docx');
+
 const toIR = async (from: Format, content: string | ArrayBuffer) => {
   switch (from) {
     case 'markdown':
-      return parseMarkdownToIR(String(content));
+      return (await loadMarkdown()).parseMarkdownToIR(String(content));
     case 'latex':
-      return parseLatexToIR(String(content));
+      return (await loadLatex()).parseLatexToIR(String(content));
     case 'docx':
-      return parseDocxToIR(content as ArrayBuffer);
+      return (await loadDocx()).parseDocxToIR(content as ArrayBuffer);
     default:
       throw new Error(`Unsupported source format: ${from}`);
   }
@@ -39,11 +34,11 @@ const toIR = async (from: Format, content: string | ArrayBuffer) => {
 const fromIR = async (to: Format, ir: Awaited<ReturnType<typeof toIR>>) => {
   switch (to) {
     case 'markdown':
-      return serializeIRToMarkdown(ir);
+      return (await loadMarkdown()).serializeIRToMarkdown(ir);
     case 'latex':
-      return serializeIRToLatex(ir);
+      return (await loadLatex()).serializeIRToLatex(ir);
     case 'docx':
-      return serializeIRToDocx(ir);
+      return (await loadDocx()).serializeIRToDocx(ir);
     default:
       throw new Error(`Unsupported target format: ${to}`);
   }

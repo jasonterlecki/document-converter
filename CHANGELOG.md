@@ -26,3 +26,4 @@
 - Adjusted markdown serialization test to accept bullet marker output.
 - Restored ordered list numbering in Docx serialization using Document numbering config.
 - Added download support for Markdown and LaTeX outputs in the web UI.
+- Fixed worker conversion imports to lazy-load docx modules and avoid DOM globals for markdown/latex.
