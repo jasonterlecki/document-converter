@@ -29,3 +29,4 @@
 - Fixed worker conversion imports to lazy-load docx modules and avoid DOM globals for markdown/latex.
 - Fixed Vite worker import resolution for @docmorph/core subpath modules.
 - Reverted Vite alias to explicit core subpath mappings after regex parse issue.
+- Updated worker module imports to reference core source files directly for Vite resolution.

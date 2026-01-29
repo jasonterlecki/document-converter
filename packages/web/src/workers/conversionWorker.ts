@@ -14,9 +14,9 @@ export type ConversionResponse = {
   error?: string;
 };
 
-const loadMarkdown = async () => import('@docmorph/core/markdown');
-const loadLatex = async () => import('@docmorph/core/latex');
-const loadDocx = async () => import('@docmorph/core/docx');
+const loadMarkdown = async () => import('../../../core/src/markdown/index.ts');
+const loadLatex = async () => import('../../../core/src/latex/index.ts');
+const loadDocx = async () => import('../../../core/src/docx/index.ts');
 
 const toIR = async (from: Format, content: string | ArrayBuffer) => {
   switch (from) {
