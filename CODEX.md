@@ -10,6 +10,9 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 - `.eslintrc.cjs`, `.prettierrc.cjs`: lint/format defaults.
 - `README.md`: quick start and usage notes.
 
+## Documentation
+- `README.md` contains the feature matrix and known limitations.
+
 ## Key entry points
 - `packages/core/src/index.ts`: public exports for the core library.
 - `packages/core/src/ir/index.ts`: IR types, validators, and normalization.

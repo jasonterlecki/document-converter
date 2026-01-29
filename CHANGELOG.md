@@ -37,3 +37,4 @@
 - Forced decode-named-character-reference to non-DOM entry to avoid document usage in workers.
 - Fixed docx serialization for browser workers by using Blob-based packing when available.
 - Updated README with quick start instructions.
+- Added feature matrix and expanded known limitations in README.
