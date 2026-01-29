@@ -59,6 +59,7 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 - Vite resolves @docmorph/core subpaths via explicit aliases in `packages/web/vite.config.ts`.
 - Worker imports core modules via relative source paths for Vite worker compatibility.
 - Separate text/docx workers are used so Markdown/LaTeX conversions avoid docx browser globals.
+- Docx worker is lazily initialized when a docx conversion is requested.
 
 ## Web UI
 - Output pane provides downloads for Markdown, LaTeX (.tex), and Docx without a preview.

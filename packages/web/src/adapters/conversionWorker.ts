@@ -12,14 +12,11 @@ export type ConvertResult = {
 
 export class ConversionWorkerClient {
   private textWorker: Worker;
-  private docxWorker: Worker;
+  private docxWorker: Worker | null = null;
   private pending = new Map<string, (response: ConversionResponse) => void>();
 
   constructor() {
     this.textWorker = new Worker(new URL('../workers/textConversionWorker.ts', import.meta.url), {
-      type: 'module',
-    });
-    this.docxWorker = new Worker(new URL('../workers/conversionWorker.ts', import.meta.url), {
       type: 'module',
     });
     const handleMessage = (event: MessageEvent<ConversionResponse>) => {
@@ -30,13 +27,15 @@ export class ConversionWorkerClient {
       }
     };
     this.textWorker.onmessage = handleMessage;
-    this.docxWorker.onmessage = handleMessage;
   }
 
   async convert(input: ConvertInput): Promise<ConvertResult> {
     const id = crypto.randomUUID();
     const message: ConversionRequest = { id, ...input };
-    const worker = input.from === 'docx' || input.to === 'docx' ? this.docxWorker : this.textWorker;
+    const worker =
+      input.from === 'docx' || input.to === 'docx'
+        ? this.ensureDocxWorker()
+        : this.textWorker;
 
     return new Promise((resolve, reject) => {
       this.pending.set(id, (response) => {
@@ -58,6 +57,23 @@ export class ConversionWorkerClient {
   dispose() {
     this.pending.clear();
     this.textWorker.terminate();
-    this.docxWorker.terminate();
+    this.docxWorker?.terminate();
+    this.docxWorker = null;
+  }
+
+  private ensureDocxWorker() {
+    if (!this.docxWorker) {
+      this.docxWorker = new Worker(new URL('../workers/conversionWorker.ts', import.meta.url), {
+        type: 'module',
+      });
+      this.docxWorker.onmessage = (event: MessageEvent<ConversionResponse>) => {
+        const handler = this.pending.get(event.data.id);
+        if (handler) {
+          handler(event.data);
+          this.pending.delete(event.data.id);
+        }
+      };
+    }
+    return this.docxWorker;
   }
 }

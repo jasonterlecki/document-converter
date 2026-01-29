@@ -33,3 +33,4 @@
 - Split text vs docx conversions into separate workers to avoid DOM-only dependencies for markdown/latex.
 - Removed output preview and kept download-only output in the web UI.
 - Hid download button until a conversion result is available.
+- Lazily initialize the docx worker to avoid loading docx dependencies for text conversions.
