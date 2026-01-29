@@ -125,7 +125,7 @@ const mapPhrasing = (nodes: PhrasingContent[]): Inline[] =>
 const mapPhrasingNode = (node: PhrasingContent): Inline[] => {
   switch (node.type) {
     case 'text':
-      return [{ type: 'Text', text: node.value }];
+      return mapTextWithUnderline(node.value);
     case 'strong':
       return [{ type: 'Strong', inlines: mapPhrasing(node.children) }];
     case 'emphasis':
@@ -159,4 +159,27 @@ const mapHtmlInline = (value: string): Inline[] => {
       inlines: [{ type: 'Text', text: content }],
     },
   ];
+};
+
+const mapTextWithUnderline = (value: string): Inline[] => {
+  const result: Inline[] = [];
+  let remaining = value;
+  const pattern = /<u>([\s\S]+?)<\/u>/i;
+
+  while (remaining.length > 0) {
+    const match = remaining.match(pattern);
+    if (!match || match.index === undefined) {
+      result.push({ type: 'Text', text: remaining });
+      break;
+    }
+    const before = remaining.slice(0, match.index);
+    if (before.length > 0) {
+      result.push({ type: 'Text', text: before });
+    }
+    const content = match[1] ?? '';
+    result.push({ type: 'Underline', inlines: [{ type: 'Text', text: content }] });
+    remaining = remaining.slice(match.index + match[0].length);
+  }
+
+  return result;
 };

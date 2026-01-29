@@ -38,3 +38,4 @@
 - Fixed docx serialization for browser workers by using Blob-based packing when available.
 - Updated README with quick start instructions.
 - Added feature matrix and expanded known limitations in README.
+- Parsed inline <u>...</u> tags in Markdown text nodes into underline IR for Docx output.
