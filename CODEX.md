@@ -46,6 +46,7 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 - Docx ordered lists use numbering config with decimal levels.
 - Docx serialization uses Blob packing in browsers and Buffer packing in Node.
 - Markdown parsing converts inline <u>...</u> tags in text nodes to underline IR.
+- Markdown parsing also maps HTML nodes containing <u> tags to underline IR.
 
 ## Tests
 - Round-trip “shape” tests live in `packages/core/test/roundtrip.*.test.ts`.

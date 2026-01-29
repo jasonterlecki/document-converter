@@ -147,21 +147,13 @@ const mapPhrasingNode = (node: PhrasingContent): Inline[] => {
   }
 };
 
-const mapHtmlInline = (value: string): Inline[] => {
-  const match = value.match(/<u>([\s\S]+?)<\/u>/i);
-  if (!match) {
-    return [{ type: 'Text', text: value }];
-  }
-  const content = match[1] ?? '';
-  return [
-    {
-      type: 'Underline',
-      inlines: [{ type: 'Text', text: content }],
-    },
-  ];
-};
+const mapHtmlInline = (value: string): Inline[] => mapHtmlWithUnderline(value);
 
 const mapTextWithUnderline = (value: string): Inline[] => {
+  return mapHtmlWithUnderline(value);
+};
+
+const mapHtmlWithUnderline = (value: string): Inline[] => {
   const result: Inline[] = [];
   let remaining = value;
   const pattern = /<u>([\s\S]+?)<\/u>/i;
