@@ -186,20 +186,20 @@ export function App() {
         </div>
         <div className="pane">
           <h2>Output</h2>
-          <div className="download">
-            {toFormat === 'docx' ? (
-              <p>Generate a .docx file from the conversion.</p>
-            ) : (
-              <p>Download the converted {toFormat} file.</p>
-            )}
-            <button
-              type="button"
-              onClick={handleDownload}
-              disabled={toFormat === 'docx' ? !outputBuffer : !outputText}
-            >
-              Download {toFormat === 'docx' ? '.docx' : `.${toFormat === 'latex' ? 'tex' : 'md'}`}
-            </button>
-          </div>
+          {((toFormat === 'docx' && outputBuffer) || (toFormat !== 'docx' && outputText)) ? (
+            <div className="download">
+              {toFormat === 'docx' ? (
+                <p>Generate a .docx file from the conversion.</p>
+              ) : (
+                <p>Download the converted {toFormat} file.</p>
+              )}
+              <button type="button" onClick={handleDownload}>
+                Download {toFormat === 'docx' ? '.docx' : `.${toFormat === 'latex' ? 'tex' : 'md'}`}
+              </button>
+            </div>
+          ) : (
+            <p className="download-placeholder">Run a conversion to enable download.</p>
+          )}
         </div>
       </section>
       {error ? (
