@@ -5,13 +5,12 @@ import { resolve } from 'node:path';
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: [
-      { find: '@docmorph/core', replacement: resolve(__dirname, '../core/src/index.ts') },
-      {
-        find: /^@docmorph\\/core\\/(markdown|latex|docx)$/,
-        replacement: resolve(__dirname, '../core/src/$1/index.ts'),
-      },
-    ],
+    alias: {
+      '@docmorph/core': resolve(__dirname, '../core/src/index.ts'),
+      '@docmorph/core/markdown': resolve(__dirname, '../core/src/markdown/index.ts'),
+      '@docmorph/core/latex': resolve(__dirname, '../core/src/latex/index.ts'),
+      '@docmorph/core/docx': resolve(__dirname, '../core/src/docx/index.ts'),
+    },
   },
   build: {
     target: 'es2022'

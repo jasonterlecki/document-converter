@@ -28,3 +28,4 @@
 - Added download support for Markdown and LaTeX outputs in the web UI.
 - Fixed worker conversion imports to lazy-load docx modules and avoid DOM globals for markdown/latex.
 - Fixed Vite worker import resolution for @docmorph/core subpath modules.
+- Reverted Vite alias to explicit core subpath mappings after regex parse issue.
