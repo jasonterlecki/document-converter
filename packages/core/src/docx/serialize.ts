@@ -38,6 +38,11 @@ export const serializeIRToDocx = async (doc: IRDocument): Promise<ArrayBuffer> =
     ],
   });
 
+  if (typeof Blob !== 'undefined') {
+    const blob = await Packer.toBlob(document);
+    return await blob.arrayBuffer();
+  }
+
   const buffer = await Packer.toBuffer(document);
   return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
 };
