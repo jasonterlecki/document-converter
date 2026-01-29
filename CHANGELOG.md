@@ -41,3 +41,4 @@
 - Parsed inline <u>...</u> tags in Markdown text nodes into underline IR for Docx output.
 - Added alias overrides for decode-named-character-reference DOM entry in Vite.
 - Ignored local codex session file.
+- Added docx worker debug logging for generated buffer size and header.

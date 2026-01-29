@@ -46,6 +46,12 @@ self.onmessage = async (event: MessageEvent<ConversionRequest>) => {
 
     const ir = await toIR(from, content);
     const output = await fromIR(to, ir);
+    if (to === 'docx' && output instanceof ArrayBuffer) {
+      const bytes = new Uint8Array(output);
+      // Debug: log header and size to ensure we emitted a docx zip
+      // eslint-disable-next-line no-console
+      console.log('[docx] bytes', bytes.length, 'header', Array.from(bytes.slice(0, 4)));
+    }
     const response: ConversionResponse = { id, ok: true, output };
     if (output instanceof ArrayBuffer) {
       self.postMessage(response, [output]);
