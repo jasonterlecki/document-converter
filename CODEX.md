@@ -56,6 +56,7 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 - Keep conversions browser-compatible; no server dependencies.
 - Update `CHANGELOG.md` and `CODEX.md` on every change.
 - Commit after each change; do not push.
+- Local `codex` session file is ignored in git.
 
 ## Web fixtures
 - Web samples import core fixtures via Vite (`packages/web/src/app/samples.ts`).
@@ -67,6 +68,7 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 - Separate text/docx workers are used so Markdown/LaTeX conversions avoid docx browser globals.
 - Docx worker is lazily initialized when a docx conversion is requested.
 - Vite aliases decode-named-character-reference to its non-DOM entry for worker safety.
+- Vite also aliases the decode-named-character-reference DOM entry path to non-DOM.
 
 ## Web UI
 - Output pane provides downloads for Markdown, LaTeX (.tex), and Docx without a preview.

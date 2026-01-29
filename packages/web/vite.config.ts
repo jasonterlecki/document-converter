@@ -14,6 +14,14 @@ export default defineConfig({
         __dirname,
         '../../node_modules/.pnpm/decode-named-character-reference@1.3.0/node_modules/decode-named-character-reference/index.js',
       ),
+      'decode-named-character-reference/index.dom.js': resolve(
+        __dirname,
+        '../../node_modules/.pnpm/decode-named-character-reference@1.3.0/node_modules/decode-named-character-reference/index.js',
+      ),
+      'decode-named-character-reference/index.dom': resolve(
+        __dirname,
+        '../../node_modules/.pnpm/decode-named-character-reference@1.3.0/node_modules/decode-named-character-reference/index.js',
+      ),
     },
   },
   build: {

@@ -39,3 +39,5 @@
 - Updated README with quick start instructions.
 - Added feature matrix and expanded known limitations in README.
 - Parsed inline <u>...</u> tags in Markdown text nodes into underline IR for Docx output.
+- Added alias overrides for decode-named-character-reference DOM entry in Vite.
+- Ignored local codex session file.
