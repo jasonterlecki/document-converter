@@ -10,6 +10,10 @@ export default defineConfig({
       '@docmorph/core/markdown': resolve(__dirname, '../core/src/markdown/index.ts'),
       '@docmorph/core/latex': resolve(__dirname, '../core/src/latex/index.ts'),
       '@docmorph/core/docx': resolve(__dirname, '../core/src/docx/index.ts'),
+      'decode-named-character-reference': resolve(
+        __dirname,
+        '../../node_modules/.pnpm/decode-named-character-reference@1.3.0/node_modules/decode-named-character-reference/index.js',
+      ),
     },
   },
   build: {

@@ -34,3 +34,4 @@
 - Removed output preview and kept download-only output in the web UI.
 - Hid download button until a conversion result is available.
 - Lazily initialize the docx worker to avoid loading docx dependencies for text conversions.
+- Forced decode-named-character-reference to non-DOM entry to avoid document usage in workers.
