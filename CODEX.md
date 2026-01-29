@@ -8,6 +8,7 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 - `packages/web`: React + Vite UI, workers, and web adapters.
 - `tsconfig.base.json`: shared TypeScript settings.
 - `.eslintrc.cjs`, `.prettierrc.cjs`: lint/format defaults.
+- `README.md`: quick start and usage notes.
 
 ## Key entry points
 - `packages/core/src/index.ts`: public exports for the core library.
