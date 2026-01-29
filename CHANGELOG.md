@@ -31,3 +31,4 @@
 - Reverted Vite alias to explicit core subpath mappings after regex parse issue.
 - Updated worker module imports to reference core source files directly for Vite resolution.
 - Split text vs docx conversions into separate workers to avoid DOM-only dependencies for markdown/latex.
+- Removed output preview and kept download-only output in the web UI.

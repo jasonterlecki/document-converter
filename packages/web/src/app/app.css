@@ -95,17 +95,6 @@ header p {
   font-size: 1.1rem;
 }
 
-textarea {
-  width: 100%;
-  min-height: 240px;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid #d3cdc4;
-  font-family: "IBM Plex Mono", "SFMono-Regular", ui-monospace, monospace;
-  font-size: 0.9rem;
-  resize: vertical;
-}
-
 .download {
   display: grid;
   gap: 12px;

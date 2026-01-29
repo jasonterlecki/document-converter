@@ -61,7 +61,7 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 - Separate text/docx workers are used so Markdown/LaTeX conversions avoid docx browser globals.
 
 ## Web UI
-- Output pane supports downloads for Markdown, LaTeX (.tex), and Docx.
+- Output pane provides downloads for Markdown, LaTeX (.tex), and Docx without a preview.
 
 ## Constraints and non-goals
 - Best-effort conversion; no LaTeX macro expansion or advanced Word features.

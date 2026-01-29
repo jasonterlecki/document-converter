@@ -200,9 +200,6 @@ export function App() {
               Download {toFormat === 'docx' ? '.docx' : `.${toFormat === 'latex' ? 'tex' : 'md'}`}
             </button>
           </div>
-          {toFormat === 'docx' ? null : (
-            <textarea value={outputText} readOnly placeholder="Converted output" />
-          )}
         </div>
       </section>
       {error ? (
