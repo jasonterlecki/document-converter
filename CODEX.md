@@ -70,6 +70,7 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 - Vite aliases decode-named-character-reference to its non-DOM entry for worker safety.
 - Vite also aliases the decode-named-character-reference DOM entry path to non-DOM.
 - Docx worker logs buffer size/header while debugging blank outputs.
+- Docx worker also re-parses generated docx during debugging to confirm content.
 
 ## Web UI
 - Output pane provides downloads for Markdown, LaTeX (.tex), and Docx without a preview.

@@ -51,6 +51,15 @@ self.onmessage = async (event: MessageEvent<ConversionRequest>) => {
       // Debug: log header and size to ensure we emitted a docx zip
       // eslint-disable-next-line no-console
       console.log('[docx] bytes', bytes.length, 'header', Array.from(bytes.slice(0, 4)));
+      try {
+        const parsed = await (await loadDocx()).parseDocxToIR(output);
+        const preview = parsed.blocks[0]?.type === 'Paragraph' ? parsed.blocks[0].inlines[0]?.type : parsed.blocks[0]?.type;
+        // eslint-disable-next-line no-console
+        console.log('[docx] parsed blocks', parsed.blocks.length, 'first', preview);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log('[docx] parse check failed', error);
+      }
     }
     const response: ConversionResponse = { id, ok: true, output };
     if (output instanceof ArrayBuffer) {
