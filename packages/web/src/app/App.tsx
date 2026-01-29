@@ -52,16 +52,31 @@ export function App() {
   };
 
   const handleDownload = () => {
-    if (!outputBuffer) {
+    if (toFormat === 'docx') {
+      if (!outputBuffer) {
+        return;
+      }
+      const blob = new Blob([outputBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
+      triggerDownload(blob, 'docmorph-output.docx');
       return;
     }
-    const blob = new Blob([outputBuffer], {
-      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    });
+
+    if (!outputText) {
+      return;
+    }
+    const extension = toFormat === 'latex' ? 'tex' : 'md';
+    const mimeType = toFormat === 'latex' ? 'application/x-tex' : 'text/markdown';
+    const blob = new Blob([outputText], { type: `${mimeType};charset=utf-8` });
+    triggerDownload(blob, `docmorph-output.${extension}`);
+  };
+
+  const triggerDownload = (blob: Blob, filename: string) => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'docmorph-output.docx';
+    link.download = filename;
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -171,14 +186,21 @@ export function App() {
         </div>
         <div className="pane">
           <h2>Output</h2>
-          {toFormat === 'docx' ? (
-            <div className="download">
+          <div className="download">
+            {toFormat === 'docx' ? (
               <p>Generate a .docx file from the conversion.</p>
-              <button type="button" onClick={handleDownload} disabled={!outputBuffer}>
-                Download .docx
-              </button>
-            </div>
-          ) : (
+            ) : (
+              <p>Download the converted {toFormat} file.</p>
+            )}
+            <button
+              type="button"
+              onClick={handleDownload}
+              disabled={toFormat === 'docx' ? !outputBuffer : !outputText}
+            >
+              Download {toFormat === 'docx' ? '.docx' : `.${toFormat === 'latex' ? 'tex' : 'md'}`}
+            </button>
+          </div>
+          {toFormat === 'docx' ? null : (
             <textarea value={outputText} readOnly placeholder="Converted output" />
           )}
         </div>
