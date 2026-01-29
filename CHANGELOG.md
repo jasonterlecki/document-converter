@@ -27,3 +27,4 @@
 - Restored ordered list numbering in Docx serialization using Document numbering config.
 - Added download support for Markdown and LaTeX outputs in the web UI.
 - Fixed worker conversion imports to lazy-load docx modules and avoid DOM globals for markdown/latex.
+- Fixed Vite worker import resolution for @docmorph/core subpath modules.
