@@ -23,6 +23,8 @@ const sampleDoc: IRDocument = {
         },
         { type: 'Text', text: ' plus ' },
         { type: 'Image', src: 'https://example.com/image.png', alt: 'image' },
+        { type: 'Text', text: ' and ' },
+        { type: 'Underline', inlines: [{ type: 'Text', text: 'underline' }] },
       ],
     },
   ],
@@ -39,6 +41,7 @@ describe('serializeIRToDocx', () => {
     expect(text).toContain('link');
     expect(text).toContain('https://example.com');
     expect(text).toContain('image');
+    expect(hasUnderline(parsed.blocks)).toBe(true);
   });
 });
 
@@ -86,3 +89,43 @@ const inlinesToText = (inlines: Inline[]): string =>
       }
     })
     .join('');
+
+const hasUnderline = (blocks: Block[]): boolean => {
+  for (const block of blocks) {
+    if (block.type === 'Paragraph' || block.type === 'Heading') {
+      if (containsUnderline(block.inlines)) {
+        return true;
+      }
+    } else if (block.type === 'List') {
+      if (block.items.some((item) => hasUnderline(item.blocks))) {
+        return true;
+      }
+    } else if (block.type === 'Blockquote') {
+      if (hasUnderline(block.blocks)) {
+        return true;
+      }
+    } else if (block.type === 'Table') {
+      if (block.headerRow && hasUnderline(extractTableRowBlocks(block.headerRow))) {
+        return true;
+      }
+      if (block.rows.some((row) => hasUnderline(extractTableRowBlocks(row)))) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+const containsUnderline = (inlines: Inline[]): boolean =>
+  inlines.some((inline) => {
+    if (inline.type === 'Underline') {
+      return true;
+    }
+    if (inline.type === 'Strong' || inline.type === 'Emphasis' || inline.type === 'Link') {
+      return containsUnderline(inline.inlines);
+    }
+    return false;
+  });
+
+const extractTableRowBlocks = (row: { cells: { blocks: Block[] }[] }): Block[] =>
+  row.cells.flatMap((cell) => cell.blocks);

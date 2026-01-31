@@ -45,3 +45,4 @@
 - Added docx worker debug re-parse to verify generated content.
 - Improved Markdown inline HTML parsing to turn <u> tags into underline IR consistently.
 - Adjusted Markdown sample fixture to avoid inline HTML underline.
+- Added docx serialize test coverage for underline runs.
