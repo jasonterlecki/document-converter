@@ -1,6 +1,6 @@
 # Sample Document
 
-This is a **bold** and *italic* paragraph with an underline and a [link](https://example.com).
+This is a **bold** and *italic* paragraph with a <u>underline</u> and a [link](https://example.com).
 
 > A blockquote line.
 

@@ -15,6 +15,7 @@ DocMorph Web is a browser-only document converter for Markdown, LaTeX, and Word 
 
 ## Fixtures
 - Markdown basic fixture is used as the web sample source of truth.
+- Markdown basic fixture includes an underline example using <u> tags.
 
 ## Key entry points
 - `packages/core/src/index.ts`: public exports for the core library.
