@@ -47,3 +47,4 @@
 - Adjusted Markdown sample fixture to avoid inline HTML underline.
 - Added docx serialize test coverage for underline runs.
 - Restored underline example in the Markdown web sample fixture.
+- Normalized underline tags in Markdown inlines to ensure <u> renders as underline in Docx.

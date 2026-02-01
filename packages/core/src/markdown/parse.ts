@@ -33,7 +33,7 @@ const mapRootContent = (node: RootContent): Block[] => {
       return [
         {
           type: 'Paragraph',
-          inlines: mapPhrasing(node.children),
+          inlines: normalizeUnderlineTags(mapPhrasing(node.children)),
         },
       ];
     case 'heading':
@@ -41,7 +41,7 @@ const mapRootContent = (node: RootContent): Block[] => {
         {
           type: 'Heading',
           level: node.depth as 1 | 2 | 3 | 4 | 5 | 6,
-          inlines: mapPhrasing(node.children),
+          inlines: normalizeUnderlineTags(mapPhrasing(node.children)),
         },
       ];
     case 'list':
@@ -114,7 +114,7 @@ const mapTableCell = (cell: MdTableCell): TableCell => ({
   blocks: [
     {
       type: 'Paragraph',
-      inlines: mapPhrasing(cell.children as PhrasingContent[]),
+      inlines: normalizeUnderlineTags(mapPhrasing(cell.children as PhrasingContent[])),
     },
   ],
 });
@@ -175,3 +175,17 @@ const mapHtmlWithUnderline = (value: string): Inline[] => {
 
   return result;
 };
+
+const normalizeUnderlineTags = (inlines: Inline[]): Inline[] =>
+  inlines.flatMap((inline) => {
+    if (inline.type === 'Text') {
+      return mapHtmlWithUnderline(inline.text);
+    }
+    if (inline.type === 'Strong' || inline.type === 'Emphasis' || inline.type === 'Underline') {
+      return [{ ...inline, inlines: normalizeUnderlineTags(inline.inlines) }];
+    }
+    if (inline.type === 'Link') {
+      return [{ ...inline, inlines: normalizeUnderlineTags(inline.inlines) }];
+    }
+    return [inline];
+  });
