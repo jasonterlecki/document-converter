@@ -192,7 +192,7 @@ const headingLevel = (level: number): HeadingLevel => {
 
 const serializeInlines = (inlines: Inline[]): TextRun[] => {
   const runs: TextRun[] = [];
-  for (const inline of inlines) {
+  for (const inline of expandUnderlineTags(inlines)) {
     runs.push(...serializeInline(inline));
   }
   return runs;
@@ -251,4 +251,41 @@ const inlineToText = (inline: Inline): string => {
     default:
       return '';
   }
+};
+
+const expandUnderlineTags = (inlines: Inline[]): Inline[] =>
+  inlines.flatMap((inline) => {
+    if (inline.type === 'Text') {
+      return splitUnderlineText(inline.text);
+    }
+    if (inline.type === 'Strong' || inline.type === 'Emphasis' || inline.type === 'Underline') {
+      return [{ ...inline, inlines: expandUnderlineTags(inline.inlines) }];
+    }
+    if (inline.type === 'Link') {
+      return [{ ...inline, inlines: expandUnderlineTags(inline.inlines) }];
+    }
+    return [inline];
+  });
+
+const splitUnderlineText = (value: string): Inline[] => {
+  const result: Inline[] = [];
+  let remaining = value;
+  const pattern = /<u>([\s\S]+?)<\/u>/i;
+
+  while (remaining.length > 0) {
+    const match = remaining.match(pattern);
+    if (!match || match.index === undefined) {
+      result.push({ type: 'Text', text: remaining });
+      break;
+    }
+    const before = remaining.slice(0, match.index);
+    if (before.length > 0) {
+      result.push({ type: 'Text', text: before });
+    }
+    const content = match[1] ?? '';
+    result.push({ type: 'Underline', inlines: [{ type: 'Text', text: content }] });
+    remaining = remaining.slice(match.index + match[0].length);
+  }
+
+  return result;
 };

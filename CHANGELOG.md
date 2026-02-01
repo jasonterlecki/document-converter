@@ -51,3 +51,4 @@
 - Added debug logging for IR block counts in docx worker.
 - Fixed Docx underline rendering by using explicit underline type.
 - Normalized underline tags across all Markdown blocks before IR normalization.
+- Added underline tag expansion fallback in LaTeX and Docx serializers.
