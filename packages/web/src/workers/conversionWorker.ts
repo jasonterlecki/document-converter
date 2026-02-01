@@ -45,6 +45,8 @@ self.onmessage = async (event: MessageEvent<ConversionRequest>) => {
     }
 
     const ir = await toIR(from, content);
+    // eslint-disable-next-line no-console
+    console.log('[docx] ir blocks', ir.blocks?.length ?? 0, 'first', ir.blocks?.[0]?.type);
     const output = await fromIR(to, ir);
     if (to === 'docx' && output instanceof ArrayBuffer) {
       const bytes = new Uint8Array(output);

@@ -48,3 +48,4 @@
 - Added docx serialize test coverage for underline runs.
 - Restored underline example in the Markdown web sample fixture.
 - Normalized underline tags in Markdown inlines to ensure <u> renders as underline in Docx.
+- Added debug logging for IR block counts in docx worker.
