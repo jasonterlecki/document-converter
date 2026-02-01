@@ -50,3 +50,4 @@
 - Normalized underline tags in Markdown inlines to ensure <u> renders as underline in Docx.
 - Added debug logging for IR block counts in docx worker.
 - Fixed Docx underline rendering by using explicit underline type.
+- Normalized underline tags across all Markdown blocks before IR normalization.

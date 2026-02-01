@@ -24,7 +24,8 @@ const parser = unified().use(remarkParse).use(remarkGfm);
 export const parseMarkdownToIR = (markdown: string): IRDocument => {
   const tree = parser.parse(markdown) as Root;
   const blocks = tree.children.flatMap((node) => mapRootContent(node));
-  return normalizeDocument({ type: 'Document', blocks });
+  const normalizedBlocks = normalizeUnderlineBlocks(blocks);
+  return normalizeDocument({ type: 'Document', blocks: normalizedBlocks });
 };
 
 const mapRootContent = (node: RootContent): Block[] => {
@@ -188,4 +189,46 @@ const normalizeUnderlineTags = (inlines: Inline[]): Inline[] =>
       return [{ ...inline, inlines: normalizeUnderlineTags(inline.inlines) }];
     }
     return [inline];
+  });
+
+const normalizeUnderlineBlocks = (blocks: Block[]): Block[] =>
+  blocks.map((block) => {
+    switch (block.type) {
+      case 'Paragraph':
+        return { ...block, inlines: normalizeUnderlineTags(block.inlines) };
+      case 'Heading':
+        return { ...block, inlines: normalizeUnderlineTags(block.inlines) };
+      case 'List':
+        return {
+          ...block,
+          items: block.items.map((item) => ({
+            ...item,
+            blocks: normalizeUnderlineBlocks(item.blocks),
+          })),
+        };
+      case 'Blockquote':
+        return { ...block, blocks: normalizeUnderlineBlocks(block.blocks) };
+      case 'Table':
+        return {
+          ...block,
+          headerRow: block.headerRow
+            ? {
+                ...block.headerRow,
+                cells: block.headerRow.cells.map((cell) => ({
+                  ...cell,
+                  blocks: normalizeUnderlineBlocks(cell.blocks),
+                })),
+              }
+            : undefined,
+          rows: block.rows.map((row) => ({
+            ...row,
+            cells: row.cells.map((cell) => ({
+              ...cell,
+              blocks: normalizeUnderlineBlocks(cell.blocks),
+            })),
+          })),
+        };
+      default:
+        return block;
+    }
   });
