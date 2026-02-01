@@ -10,6 +10,7 @@ import {
   WidthType,
   AlignmentType,
   LevelFormat,
+  UnderlineType,
 } from 'docx';
 import type { Block, Inline, IRDocument, TableAlignment } from '../ir';
 
@@ -206,7 +207,12 @@ const serializeInline = (inline: Inline): TextRun[] => {
     case 'Emphasis':
       return [new TextRun({ text: inline.inlines.map(inlineToText).join(''), italics: true })];
     case 'Underline':
-      return [new TextRun({ text: inline.inlines.map(inlineToText).join(''), underline: {} })];
+      return [
+        new TextRun({
+          text: inline.inlines.map(inlineToText).join(''),
+          underline: { type: UnderlineType.SINGLE },
+        }),
+      ];
     case 'CodeSpan':
       return [new TextRun({ text: inline.text, font: 'Courier New' })];
     case 'LineBreak':
